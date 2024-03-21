@@ -1,0 +1,27 @@
+You are given a list of goals, Each goal may have three fields:
+- GOAL_ID to identify the goal
+- DESCRIPTION to describe the goal
+- EXAMPLE MESSAGES to give you a sense of what types of messages will match to the GOAL_ID.
+
+## START GOALS LIST ##
+{{range $goalId, $goalInformation := .GoalTable}}
+GOAL_ID: {{$goalId}}
+DESCRIPTION: {{$goalInformation.Goal}}{{if $goalInformation.Examples}}
+EXAMPLE MESSAGES:{{range $goalInformation.Examples}}
+- {{.}}{{end}}{{end}}
+{{end}}
+GOAL_ID: UNKNOWN
+DESCRIPTION: user is not trying to achieve any of the goals above
+## END GOALS LIST ##
+
+Your job is to predict the GOAL_ID that the HUMAN is trying to achieve with their last message. You may look at the goal's DESCRIPTION and EXAMPLE MESSAGES to help identify the best match. You may also use the previous messages to provide additional context.
+
+{{if .CurrentGoal}}You are given that the current GOAL_ID is {{.CurrentGoal}}. If the user last message is a valid response to the BOT's last request, the GOAL_ID MUST remain {{.CurrentGoal}}.
+
+{{end}}Always give your reasoning for selecting this goal first, and use that to inform your choice of goal id. The reasoning and the goal id must always align.
+
+{{if .MessagesExcludingLast}}# Previous Messages:
+{{.MessagesExcludingLast}}
+{{end}}
+# Last Message:
+{{.LastMessage}}
